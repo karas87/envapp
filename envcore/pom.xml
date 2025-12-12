@@ -4,10 +4,16 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>tr.com.envapp</groupId>
-  <artifactId>envappold</artifactId>
+  <parent>
+    <groupId>tr.com.envapp</groupId>
+    <artifactId>envapp</artifactId>
+    <version>1.0.1</version>
+  </parent>
+
+  <groupId>tr.com.envapp.envcore</groupId>
+  <artifactId>envcore</artifactId>
   <version>1.0.1</version>
-  <name>envapp</name>
+  <name>envcore</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
