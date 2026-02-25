@@ -36,7 +36,7 @@ import javax.imageio.ImageIO;
 
 public class EnvCredentialApp extends Application {
 
-  private static final String VERSION = "1.0.1";
+  private static final String VERSION = "2.0.0";
 
   private final ObservableList<Credential> data = FXCollections.observableArrayList();
   private final ObjectMapper objectMapper = new ObjectMapper();
