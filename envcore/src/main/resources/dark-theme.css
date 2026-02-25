@@ -1,0 +1,66 @@
+/* Dark Theme - Table Row Colors */
+
+/* Normal satır */
+.table-row-cell {
+    -fx-background-color: #2b2b2b;
+    -fx-text-fill: #e0e0e0;
+    -fx-border-color: transparent;
+}
+
+/* Çift/tek satır zebra efekti */
+.table-row-cell:odd {
+    -fx-background-color: #313335;
+}
+
+.table-row-cell:even {
+    -fx-background-color: #2b2b2b;
+}
+
+/* Hover */
+.table-row-cell:hover {
+    -fx-background-color: #3d4043;
+}
+
+/* Seçili satır */
+.table-row-cell:selected {
+    -fx-background-color: #4b6eaf;
+}
+
+/* Seçili + hover */
+.table-row-cell:selected:hover {
+    -fx-background-color: #5a7ec0;
+}
+
+/* Hücre yazı rengi */
+.table-row-cell .table-cell {
+    -fx-text-fill: #e0e0e0;
+    -fx-border-color: transparent;
+}
+
+/* Seçili hücre yazı rengi */
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: #ffffff;
+}
+
+/* Kolon başlıkları */
+.table-view .column-header {
+    -fx-background-color: #3c3f41;
+    -fx-text-fill: #e0e0e0;
+    -fx-border-color: #555555;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #e0e0e0;
+    -fx-font-weight: bold;
+}
+
+/* Tablo arka planı */
+.table-view {
+    -fx-background-color: #2b2b2b;
+    -fx-border-color: #555555;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #3c3f41;
+}
+
