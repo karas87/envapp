@@ -1,19 +1,21 @@
-package tr.com.envapp.search;
+package tr.com.envapp.model;
 
 /**
  * Arama sonuçlarını tutan model sınıfı
  */
-public class SearchResult {
+public class SearchResultDTO {
     private final String filePath;
     private final int lineNumber;
     private final String lineContent;
     private final String fileName;
+    private final String projectName;
 
-    public SearchResult(String filePath, int lineNumber, String lineContent) {
+    public SearchResultDTO(String filePath, int lineNumber, String lineContent, String projectName) {
         this.filePath = filePath;
         this.lineNumber = lineNumber;
         this.lineContent = lineContent;
         this.fileName = extractFileName(filePath);
+        this.projectName = projectName;
     }
 
     private String extractFileName(String path) {
@@ -35,6 +37,10 @@ public class SearchResult {
 
     public String getFileName() {
         return fileName;
+    }
+
+    public String getProjectName() {
+        return projectName;
     }
 
     @Override
