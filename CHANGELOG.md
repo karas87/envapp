@@ -5,7 +5,13 @@ Format: [Keep a Changelog](https://keepachangelog.com/tr/1.0.0/)
 
 ---
 
-## [3.0.0] - 03.06.2026
+## [3.6.0] - 17.08.2026
+
+### [Eklendi]
+- Tekil Çalışma Mantığı (Single Instance)
+  - Uygulamanın aynı anda yalnızca tek bir instance'ının çalışmasını sağlayan singleton mekanizması eklendi.
+
+## [3.0.0] - 09.08.2026
 
 ### Eklendi
 - Credentials
