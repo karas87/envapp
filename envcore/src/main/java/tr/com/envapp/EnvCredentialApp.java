@@ -11,7 +11,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileLock;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -42,6 +45,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -49,8 +54,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javax.imageio.ImageIO;
 import tr.com.envapp.git.GitTabPane;
@@ -61,7 +64,7 @@ import tr.com.envapp.token.TokenPane;
 
 public class EnvCredentialApp extends Application {
 
-  private static final String VERSION = "3.0.0";
+  private static final String VERSION = "3.6.0";
 
   private final ObservableList<CredentialDTO> data = FXCollections.observableArrayList();
   private final ObjectMapper objectMapper = new ObjectMapper();
@@ -74,12 +77,55 @@ public class EnvCredentialApp extends Application {
   // TrayIcon referansı
   private TrayIcon trayIcon;
 
+  // Singleton instance kontrolü için
+  private static FileLock instanceLock;
+  private static RandomAccessFile lockFile;
+
   public static void start() {
     launch();
   }
 
+  /**
+   * Tek bir uygulama örneğinin çalışmasını garanti eden kilit mekanizması
+   */
+  private static boolean acquireInstanceLock() {
+    try {
+      String tempDir = System.getProperty("java.io.tmpdir");
+      File lockFileObj = new File(tempDir, "envapp.lock");
+      lockFile = new RandomAccessFile(lockFileObj, "rw");
+      instanceLock = lockFile.getChannel().tryLock();
+
+      if (instanceLock == null) {
+        lockFile.close();
+        return false;
+      }
+
+      // JVM kapanınca kilidi serbest bırak
+      Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+        try {
+          if (instanceLock != null) {
+            instanceLock.release();
+          }
+          if (lockFile != null) {
+            lockFile.close();
+          }
+        } catch (IOException ignored) {
+        }
+      }));
+
+      return true;
+    } catch (IOException ignored) {
+      return false;
+    }
+  }
+
   @Override
   public void start(Stage stage) {
+    // Singleton instance kontrolü
+    if (!acquireInstanceLock()) {
+      showAlert("EnvApp zaten çalışıyor!\n\nAktif çalışan bir uygulama var, ikinci uygulamayı açamazsınız.");
+      return;
+    }
     Platform.setImplicitExit(false);
 
     // Asıl UI penceresi

@@ -6,7 +6,7 @@
 
   <groupId>tr.com.envapp</groupId>
   <artifactId>envapp</artifactId>
-  <version>3.0.0</version>
+  <version>3.6.0</version>
   <name>envapp</name>
   <packaging>pom</packaging>
 
