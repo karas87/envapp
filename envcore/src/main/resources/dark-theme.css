@@ -42,6 +42,59 @@
     -fx-text-fill: #ffffff;
 }
 
+/* Checkbox - normal satır: işaretsiz kutu */
+.table-row-cell .check-box .box {
+    -fx-background-color: #3c3f41;
+    -fx-border-color: #888888;
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+}
+
+/* İşaretsizken mark görünmesin */
+.table-row-cell .check-box .mark {
+    -fx-background-color: transparent;
+    -fx-shape: null;
+}
+
+/* İşaretliyken: yeşil kutu + beyaz tik */
+.table-row-cell .check-box:selected .box {
+    -fx-background-color: #4CAF50;
+    -fx-border-color: #66BB6A;
+}
+
+.table-row-cell .check-box:selected .mark {
+    -fx-background-color: #ffffff;
+    -fx-shape: "M -0.25,6.5 L 4,11 11.25,0.25 9.75,-0.75 4,9 1.25,5.5 z";
+    -fx-scale-shape: true;
+}
+
+/* Checkbox - seçili (mavi) satır: işaretsiz kutu */
+.table-row-cell:selected .check-box .box {
+    -fx-background-color: #1e2a3a;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+}
+
+.table-row-cell:selected .check-box .mark {
+    -fx-background-color: transparent;
+    -fx-shape: null;
+}
+
+/* Seçili satırda işaretliyken: yeşil kutu + beyaz tik */
+.table-row-cell:selected .check-box:selected .box {
+    -fx-background-color: #4CAF50;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 1.5;
+}
+
+.table-row-cell:selected .check-box:selected .mark {
+    -fx-background-color: #ffffff;
+    -fx-shape: "M -0.25,6.5 L 4,11 11.25,0.25 9.75,-0.75 4,9 1.25,5.5 z";
+    -fx-scale-shape: true;
+}
+
 /* Kolon başlıkları */
 .table-view .column-header {
     -fx-background-color: #3c3f41;
@@ -64,3 +117,149 @@
     -fx-background-color: #3c3f41;
 }
 
+/* Scrollbar - Gri Tonlar */
+/* Scrollbar genişliği */
+.table-view .scroll-bar:vertical {
+    -fx-pref-width: 12px;
+    -fx-min-width: 12px;
+    -fx-max-width: 12px;
+}
+
+.table-view .scroll-bar:horizontal {
+    -fx-pref-height: 12px;
+    -fx-min-height: 12px;
+    -fx-max-height: 12px;
+}
+
+.table-view .scroll-bar:vertical .track,
+.table-view .scroll-bar:horizontal .track {
+    -fx-background-color: #2b2b2b;
+    -fx-border-color: #3c3f41;
+    -fx-background-radius: 0;
+}
+
+.table-view .scroll-bar .thumb {
+    -fx-background-color: #5a5a5a;
+    -fx-background-radius: 4;
+}
+
+.table-view .scroll-bar .thumb:hover {
+    -fx-background-color: #6a6a6a;
+}
+
+.table-view .scroll-bar .thumb:pressed {
+    -fx-background-color: #7a7a7a;
+}
+
+.table-view .scroll-bar .increment-button,
+.table-view .scroll-bar .decrement-button {
+    -fx-background-color: #3c3f41;
+    -fx-padding: 3 3 3 3;
+}
+
+.table-view .scroll-bar .increment-button:hover,
+.table-view .scroll-bar .decrement-button:hover {
+    -fx-background-color: #4c4f51;
+}
+
+.table-view .scroll-bar .increment-arrow,
+.table-view .scroll-bar .decrement-arrow {
+    -fx-background-color: #6a6a6a;
+    -fx-padding: 0.4em;
+    -fx-scale-x: 1.3;
+    -fx-scale-y: 1.3;
+}
+
+.table-view .scroll-bar:vertical .increment-arrow {
+    -fx-shape: "M 0 0 L 5 5 L 10 0 Z";
+}
+
+.table-view .scroll-bar:vertical .decrement-arrow {
+    -fx-shape: "M 0 5 L 5 0 L 10 5 Z";
+}
+
+.table-view .scroll-bar:horizontal .increment-arrow {
+    -fx-shape: "M 0 0 L 5 5 L 0 10 Z";
+}
+
+.table-view .scroll-bar:horizontal .decrement-arrow {
+    -fx-shape: "M 5 0 L 0 5 L 5 10 Z";
+}
+
+/* Scrollbar köşe */
+.table-view .corner {
+    -fx-background-color: #2b2b2b;
+}
+
+/* TextArea Scrollbar - Table ile aynı stilde */
+.text-area .scroll-bar:vertical {
+    -fx-pref-width: 12px;
+    -fx-min-width: 12px;
+    -fx-max-width: 12px;
+}
+
+.text-area .scroll-bar:horizontal {
+    -fx-pref-height: 12px;
+    -fx-min-height: 12px;
+    -fx-max-height: 12px;
+}
+
+.text-area .scroll-bar:vertical .track,
+.text-area .scroll-bar:horizontal .track {
+    -fx-background-color: #2b2b2b;
+    -fx-border-color: #3c3f41;
+    -fx-background-radius: 0;
+}
+
+.text-area .scroll-bar .thumb {
+    -fx-background-color: #5a5a5a;
+    -fx-background-radius: 4;
+}
+
+.text-area .scroll-bar .thumb:hover {
+    -fx-background-color: #6a6a6a;
+}
+
+.text-area .scroll-bar .thumb:pressed {
+    -fx-background-color: #7a7a7a;
+}
+
+.text-area .scroll-bar .increment-button,
+.text-area .scroll-bar .decrement-button {
+    -fx-background-color: #3c3f41;
+    -fx-padding: 3 3 3 3;
+}
+
+.text-area .scroll-bar .increment-button:hover,
+.text-area .scroll-bar .decrement-button:hover {
+    -fx-background-color: #4c4f51;
+}
+
+.text-area .scroll-bar .increment-arrow,
+.text-area .scroll-bar .decrement-arrow {
+    -fx-background-color: #6a6a6a;
+    -fx-padding: 0.4em;
+    -fx-scale-x: 1.3;
+    -fx-scale-y: 1.3;
+}
+
+.text-area .scroll-bar:vertical .increment-arrow {
+    -fx-shape: "M 0 0 L 5 5 L 10 0 Z";
+}
+
+.text-area .scroll-bar:vertical .decrement-arrow {
+    -fx-shape: "M 0 5 L 5 0 L 10 5 Z";
+}
+
+.text-area .scroll-bar:horizontal .increment-arrow {
+    -fx-shape: "M 0 0 L 5 5 L 0 10 Z";
+}
+
+.text-area .scroll-bar:horizontal .decrement-arrow {
+    -fx-shape: "M 5 0 L 0 5 L 5 10 Z";
+}
+
+/* TextArea scrollbar köşe */
+.text-area .scroll-pane .corner {
+    -fx-background-color: #2b2b2b;
+}

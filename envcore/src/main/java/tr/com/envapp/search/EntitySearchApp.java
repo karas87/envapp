@@ -3,19 +3,21 @@ package tr.com.envapp.search;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+import tr.com.envapp.model.SearchResultDTO;
 
 /**
  * Entity Search Uygulaması
- *
+ * <p>
  * Bu uygulama verilen path'teki projelerde belirtilen string'i arar
  * ve kullanıldığı yerlerin isimlerini çıktı olarak verir.
- *
+ * <p>
  * Kullanım:
  *   java -jar EntitySearch.jar <path> <aranacak_string> [klasör_pattern]
  *   java -jar EntitySearch.jar (interaktif mod)
- *
+ * <p>
  * Örnek:
  *   java -jar EntitySearch.jar "C:\Projects" "CustomerEntity"
  *   java -jar EntitySearch.jar "C:\Projects" "CustomerEntity" "his-api-*"
@@ -24,10 +26,12 @@ import java.util.stream.Collectors;
 public class EntitySearchApp {
 
     private static final String BANNER =
-        "╔═══════════════════════════════════════════════════════════╗\n" +
-        "║                   ENTITY SEARCH TOOL                      ║\n" +
-        "║         Proje Dosyalarında Metin Arama Aracı             ║\n" +
-        "╚═══════════════════════════════════════════════════════════╝\n";
+        """
+            ╔═══════════════════════════════════════════════════════════╗
+            ║                   ENTITY SEARCH TOOL                      ║
+            ║         Proje Dosyalarında Metin Arama Aracı              ║
+            ╚═══════════════════════════════════════════════════════════╝
+            """;
 
     public static void main(String[] args) {
         // Ctrl+C ile düzgün çıkış için shutdown hook
@@ -86,17 +90,17 @@ public class EntitySearchApp {
 
         // Tarama sırasında klasör durumunu göster
         System.out.println("\n📂 TARAMA DURUMU:");
-        searchService.setStatusListener((directoryName, foundCount) -> {
+       /* searchService.setStatusListener((directoryName, foundCount) -> {
             if (foundCount > 0) {
                 System.out.println("   ✓ " + directoryName + " → " + foundCount + " sonuç bulundu");
             } else {
                 System.out.println("   ○ " + directoryName);
             }
-        });
+        });*/
 
         long startTime = System.currentTimeMillis();
 
-        List<SearchResult> results = searchService.search(path, searchString, folderPattern);
+        List<SearchResultDTO> results = searchService.search(path, searchString, folderPattern);
 
         System.out.println();
 
@@ -114,23 +118,23 @@ public class EntitySearchApp {
             results.size(), duration);
     }
 
-    private static void printResults(List<SearchResult> results) {
+    private static void printResults(List<SearchResultDTO> results) {
         System.out.println("\n📁 BULUNAN SONUÇLAR:\n");
 
         // Dosyalara göre grupla
-        Map<String, List<SearchResult>> groupedByFile = results.stream()
-            .collect(Collectors.groupingBy(SearchResult::getFilePath));
+        Map<String, List<SearchResultDTO>> groupedByFile = results.stream()
+            .collect(Collectors.groupingBy(SearchResultDTO::getFilePath));
 
         int fileCount = 0;
-        for (Map.Entry<String, List<SearchResult>> entry : groupedByFile.entrySet()) {
+        for (Map.Entry<String, List<SearchResultDTO>> entry : groupedByFile.entrySet()) {
             fileCount++;
             String filePath = entry.getKey();
-            List<SearchResult> fileResults = entry.getValue();
+            List<SearchResultDTO> fileResults = entry.getValue();
 
             System.out.println("┌─ Dosya #" + fileCount + ": " + filePath);
             System.out.println("│  Toplam " + fileResults.size() + " eşleşme bulundu");
 
-            for (SearchResult result : fileResults) {
+            for (SearchResultDTO result : fileResults) {
                 String lineContent = result.getLineContent().trim();
                 // Uzun satırları kısalt
                 if (lineContent.length() > 100) {
@@ -146,7 +150,7 @@ public class EntitySearchApp {
         printSummary(groupedByFile);
     }
 
-    private static void printSummary(Map<String, List<SearchResult>> groupedByFile) {
+    private static void printSummary(Map<String, List<SearchResultDTO>> groupedByFile) {
         System.out.println("\n📊 ÖZET:");
         System.out.println("   Toplam dosya sayısı: " + groupedByFile.size());
 
@@ -179,9 +183,7 @@ public class EntitySearchApp {
 
     private static String repeatString(String str, int count) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < count; i++) {
-            sb.append(str);
-        }
+        sb.repeat(str, Math.max(0, count));
         return sb.toString();
     }
 }

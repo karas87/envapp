@@ -34,6 +34,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+import tr.com.envapp.model.SearchResultDTO;
 
 /**
  * Entity Search - Swing GUI (FlatLaf Dark Theme)
@@ -52,7 +53,7 @@ public class EntitySearchGUI extends JFrame {
     private JButton clearButton;
     private JLabel statusLabel;
     private JProgressBar progressBar;
-    private SwingWorker<List<SearchResult>, Void> currentWorker;
+    private SwingWorker<List<SearchResultDTO>, Void> currentWorker;
     private String currentSearchString;
     private boolean currentCaseSensitive;
     private boolean currentWholeWord;
@@ -317,7 +318,7 @@ public class EntitySearchGUI extends JFrame {
             long startTime;
 
             @Override
-            protected List<SearchResult> doInBackground() {
+            protected List<SearchResultDTO> doInBackground() {
                 startTime = System.currentTimeMillis();
                 EntitySearchService searchService = new EntitySearchService();
                 searchService.setCaseSensitive(finalCaseSensitive);
@@ -331,7 +332,7 @@ public class EntitySearchGUI extends JFrame {
                     if (isCancelled()) {
                         return;
                     }
-                    List<SearchResult> results = get();
+                    List<SearchResultDTO> results = get();
                     long duration = System.currentTimeMillis() - startTime;
                     displayResults(results, duration);
                     statusLabel.setText("Arama tamamlandi! " + results.size() + " sonuc bulundu. (" + duration + " ms)");
@@ -351,7 +352,7 @@ public class EntitySearchGUI extends JFrame {
         currentWorker.execute();
     }
 
-    private void displayResults(List<SearchResult> results, long duration) {
+    private void displayResults(List<SearchResultDTO> results, long duration) {
         StyledDocument doc = resultArea.getStyledDocument();
         String basePath = pathField.getText().trim();
 
@@ -394,19 +395,19 @@ public class EntitySearchGUI extends JFrame {
                 doc.insertString(doc.getLength(), "=".repeat(70) + "\n\n", headerStyle);
 
                 // Önce projeye göre grupla, sonra dosyaya göre
-                Map<String, Map<String, List<SearchResult>>> groupedByProject = results.stream()
+                Map<String, Map<String, List<SearchResultDTO>>> groupedByProject = results.stream()
                     .collect(Collectors.groupingBy(
                         r -> extractProjectName(r.getFilePath(), basePath),
-                        Collectors.groupingBy(SearchResult::getFilePath)
+                        Collectors.groupingBy(SearchResultDTO::getFilePath)
                     ));
 
                 int projectCount = 0;
                 int totalFiles = 0;
 
-                for (Map.Entry<String, Map<String, List<SearchResult>>> projectEntry : groupedByProject.entrySet()) {
+                for (Map.Entry<String, Map<String, List<SearchResultDTO>>> projectEntry : groupedByProject.entrySet()) {
                     projectCount++;
                     String projectName = projectEntry.getKey();
-                    Map<String, List<SearchResult>> filesInProject = projectEntry.getValue();
+                    Map<String, List<SearchResultDTO>> filesInProject = projectEntry.getValue();
 
                     int projectResultCount = filesInProject.values().stream().mapToInt(List::size).sum();
 
@@ -417,11 +418,11 @@ public class EntitySearchGUI extends JFrame {
                     doc.insertString(doc.getLength(), "│\n", defaultStyle);
 
                     int fileIndex = 0;
-                    for (Map.Entry<String, List<SearchResult>> fileEntry : filesInProject.entrySet()) {
+                    for (Map.Entry<String, List<SearchResultDTO>> fileEntry : filesInProject.entrySet()) {
                         fileIndex++;
                         totalFiles++;
                         String filePath = fileEntry.getKey();
-                        List<SearchResult> fileResults = fileEntry.getValue();
+                        List<SearchResultDTO> fileResults = fileEntry.getValue();
 
                         // Dosya yolunu kısalt (proje adından sonraki kısmı göster)
                         String shortPath = getShortFilePath(filePath, basePath, projectName);
@@ -434,7 +435,7 @@ public class EntitySearchGUI extends JFrame {
                         doc.insertString(doc.getLength(), " (" + fileResults.size() + " eslesme)\n", defaultStyle);
 
                         for (int i = 0; i < fileResults.size(); i++) {
-                            SearchResult result = fileResults.get(i);
+                            SearchResultDTO result = fileResults.get(i);
                             String lineContent = result.getLineContent().trim();
                             if (lineContent.length() > 80) {
                                 lineContent = lineContent.substring(0, 77) + "...";
